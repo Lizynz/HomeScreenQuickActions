@@ -10,7 +10,7 @@ endif
 
 GO_EASY_ON_ME = 1
 
-PACKAGE_VERSION = 1.0
+PACKAGE_VERSION = 1.7
 
 export SYSROOT = $(THEOS)/sdks/iPhoneOS14.2.sdk
 

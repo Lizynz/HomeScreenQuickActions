@@ -406,17 +406,13 @@ static void receivedNotification(CFNotificationCenterRef center, void *observer,
 }
 
 static void ShowMessage( NSString *title, NSString *message ) {
-//	UIWindow *currentAlertWindow = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-//	currentAlertWindow.windowLevel = UIWindowLevelAlert + 13;
-//	currentAlertWindow.rootViewController = [[UIViewController alloc] init];
 	UIAlertController *currentAlert = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
 	UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:^(UIAlertAction * action) {
         [currentAlert dismissViewControllerAnimated:YES completion:nil];
 	}];
 	[currentAlert addAction:cancel];
-    [[%c(SBIconController) sharedInstance] presentViewController:currentAlert animated:YES completion:nil];
-//	[currentAlertWindow makeKeyAndVisible];
-//	[currentAlertWindow.rootViewController presentViewController:currentAlert animated:YES completion:nil];
+    UIViewController *rootViewController = [[[UIApplication sharedApplication] keyWindow] rootViewController];
+    [rootViewController presentViewController:currentAlert animated:YES completion:nil];
 }
 
 static void ClearDirectoryURLContents(NSURL *url) {
@@ -1087,9 +1083,6 @@ static void ClearDirectoryURLContents(NSURL *url) {
 				staticDiskUsage = [NSNumber numberWithFloat:([staticDiskUsage doubleValue] + [applicationProxy.staticDiskUsage doubleValue])];
 				[appsToOffload addObject: [icon applicationBundleID]];
 			}
-//			UIWindow *currentAlertWindow = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-//			currentAlertWindow.windowLevel = UIWindowLevelAlert + 13;
-//			currentAlertWindow.rootViewController = [[UIViewController alloc] init];
 			UIAlertController *currentAlert = [UIAlertController alertControllerWithTitle:@"Offload Apps" message:[NSString stringWithFormat:@"Do you want to Offload Apps in %@ folder?", title] preferredStyle:UIAlertControllerStyleAlert];
 			UIAlertAction *confirm = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * action) {
                 [currentAlert dismissViewControllerAnimated:YES completion:nil];
@@ -1107,16 +1100,12 @@ static void ClearDirectoryURLContents(NSURL *url) {
 			}];
 			[currentAlert addAction:confirm];
 			[currentAlert addAction:cancel];
-            [[%c(SBIconController) sharedInstance] presentViewController:currentAlert animated:YES completion:nil];
-//			[currentAlertWindow makeKeyAndVisible];
-//			[currentAlertWindow.rootViewController presentViewController:currentAlert animated:YES completion:nil];
+            UIViewController *rootViewController = [[[UIApplication sharedApplication] keyWindow] rootViewController];
+            [rootViewController presentViewController:currentAlert animated:YES completion:nil];
 		} else {
 			LSApplicationProxy *applicationProxy = [%c(LSApplicationProxy) applicationProxyForIdentifier:applicationBundleID];
 			title = applicationProxy.localizedName;
 			staticDiskUsage = applicationProxy.staticDiskUsage;
-//			UIWindow *currentAlertWindow = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-//			currentAlertWindow.windowLevel = UIWindowLevelAlert + 13;
-//			currentAlertWindow.rootViewController = [[UIViewController alloc] init];
 			UIAlertController *currentAlert = [UIAlertController alertControllerWithTitle:@"Offload App" message:[NSString stringWithFormat:@"Do you want to Offload %@?", title] preferredStyle:UIAlertControllerStyleAlert];
 			UIAlertAction *confirm = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * action) {
                 [currentAlert dismissViewControllerAnimated:YES completion:nil];
@@ -1132,9 +1121,8 @@ static void ClearDirectoryURLContents(NSURL *url) {
 			}];
 			[currentAlert addAction:confirm];
 			[currentAlert addAction:cancel];
-            [[%c(SBIconController) sharedInstance] presentViewController:currentAlert animated:YES completion:nil];
-//			[currentAlertWindow makeKeyAndVisible];
-//			[currentAlertWindow.rootViewController presentViewController:currentAlert animated:YES completion:nil];
+            UIViewController *rootViewController = [[[UIApplication sharedApplication] keyWindow] rootViewController];
+            [rootViewController presentViewController:currentAlert animated:YES completion:nil];
 		}
 		return NO;
 	} else if ( ( [[self icon] respondsToSelector:@selector(applicationBundleID)] || [self isFolderIcon] ) && [[arg1 type] isEqualToString:@"com.tomaszpoliszuk.springboardhome.application-shortcut-item.clear-badge"] ) {
@@ -1203,9 +1191,6 @@ static void ClearDirectoryURLContents(NSURL *url) {
 				originalDynamicSize = [NSNumber numberWithFloat:([originalDynamicSize doubleValue] + [applicationProxy.dynamicDiskUsage doubleValue])];
 			}
 			LSApplicationProxy *applicationProxyNew = [%c(LSApplicationProxy) applicationProxyForIdentifier:applicationBundleID];
-//			UIWindow *currentAlertWindow = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-//			currentAlertWindow.windowLevel = UIWindowLevelAlert + 13;
-//			currentAlertWindow.rootViewController = [[UIViewController alloc] init];
 			UIAlertController *currentAlert = [UIAlertController alertControllerWithTitle:@"Reset Apps" message:[NSString stringWithFormat:@"Do you want to Reset Apps in %@ folder?", title] preferredStyle:UIAlertControllerStyleAlert];
 			UIAlertAction *confirm = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * action) {
                 [currentAlert dismissViewControllerAnimated:YES completion:nil];
@@ -1235,19 +1220,14 @@ static void ClearDirectoryURLContents(NSURL *url) {
 			}];
 			[currentAlert addAction:confirm];
 			[currentAlert addAction:cancel];
-            [[%c(SBIconController) sharedInstance] presentViewController:currentAlert animated:YES completion:nil];
-//			[currentAlertWindow makeKeyAndVisible];
-//			[currentAlertWindow.rootViewController presentViewController:currentAlert animated:YES completion:nil];
+            UIViewController *rootViewController = [[[UIApplication sharedApplication] keyWindow] rootViewController];
+            [rootViewController presentViewController:currentAlert animated:YES completion:nil];
 
 		} else {
 			LSApplicationProxy *applicationProxy = [%c(LSApplicationProxy) applicationProxyForIdentifier:applicationBundleID];
 			NSURL *dataContainer = applicationProxy.dataContainerURL;
 			title = applicationProxy.localizedName;
 			originalDynamicSize = applicationProxy.dynamicDiskUsage;
-
-//			UIWindow *currentAlertWindow = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-//			currentAlertWindow.windowLevel = UIWindowLevelAlert + 13;
-//			currentAlertWindow.rootViewController = [[UIViewController alloc] init];
 
 			UIAlertController *currentAlert = [UIAlertController alertControllerWithTitle:@"Reset App" message:[NSString stringWithFormat:@"Do you want to Reset %@?", title] preferredStyle:UIAlertControllerStyleAlert];
 			UIAlertAction *confirm = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * action) {
@@ -1273,10 +1253,8 @@ static void ClearDirectoryURLContents(NSURL *url) {
 			}];
 			[currentAlert addAction:confirm];
 			[currentAlert addAction:cancel];
-            [[%c(SBIconController) sharedInstance] presentViewController:currentAlert animated:YES completion:nil];
-//
-//			[currentAlertWindow makeKeyAndVisible];
-//			[currentAlertWindow.rootViewController presentViewController:currentAlert animated:YES completion:nil];
+            UIViewController *rootViewController = [[[UIApplication sharedApplication] keyWindow] rootViewController];
+            [rootViewController presentViewController:currentAlert animated:YES completion:nil];
 		}
 		return NO;
 	} else if ( ( [self respondsToSelector:@selector(applicationBundleIdentifier)] || [self respondsToSelector:@selector(applicationBundleIdentifierForShortcuts)] ) && [[arg1 type] isEqualToString:@"com.tomaszpoliszuk.springboardhome.application-shortcut-item.open-app-in-filza"] ) {
