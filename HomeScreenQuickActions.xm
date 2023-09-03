@@ -1377,13 +1377,13 @@ static void ClearDirectoryURLContents(NSURL *url) {
 %hook UIActivityContentViewController
 - (void)viewWillAppear:(bool)arg1 {
 	%orig;
-	if ( enableTweak && [UIDevice currentDevice].userInterfaceIdiom != UIUserInterfaceIdiomPad ) {
+	if ( enableTweak && [UIDevice currentDevice].userInterfaceIdiom != UIUserInterfaceIdiomPad && [UIDevice currentDevice].userInterfaceIdiom != UIUserInterfaceIdiomPhone) {
 		kDismissFloatingDockIfPresented;
 	}
 }
 - (void)viewWillDisappear:(bool)arg1 {
 	%orig;
-	if ( enableTweak && [UIDevice currentDevice].userInterfaceIdiom != UIUserInterfaceIdiomPad ) {
+	if ( enableTweak && [UIDevice currentDevice].userInterfaceIdiom != UIUserInterfaceIdiomPad && [UIDevice currentDevice].userInterfaceIdiom != UIUserInterfaceIdiomPhone) {
 		kPresentFloatingDockIfDismissed;
 	}
 }
