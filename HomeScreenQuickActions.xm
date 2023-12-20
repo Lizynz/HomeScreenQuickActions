@@ -976,7 +976,14 @@ static void ClearDirectoryURLContents(NSURL *url) {
 					itemID = [NSString stringWithFormat:@"%@", [[icon webClip] pageURL]];
 					itemType = @".bookmark.";
 					UIImage *appIcon = [[icon webClip] iconImage];
-					[folderCustomQuickActionAppListItem setIcon:[[%c(SBSApplicationShortcutCustomImageIcon) alloc] initWithImageData:UIImagePNGRepresentation(appIcon) dataType:0 isTemplate:0]];
+                    UIGraphicsBeginImageContextWithOptions(appIcon.size, NO, appIcon.scale);
+                    CGRect rect = CGRectMake(0, 0, appIcon.size.width, appIcon.size.height);
+                    UIBezierPath *bezierPath = [UIBezierPath bezierPathWithRoundedRect:rect cornerRadius:30.5];
+                    [bezierPath addClip];
+                    [appIcon drawInRect:rect];
+                    UIImage *roundedCornerImage = UIGraphicsGetImageFromCurrentImageContext();
+                    UIGraphicsEndImageContext();
+                    [folderCustomQuickActionAppListItem setIcon:[[%c(SBSApplicationShortcutCustomImageIcon) alloc] initWithImageData:UIImagePNGRepresentation(roundedCornerImage) dataType:0 isTemplate:0]];
 				}
 				if ( itemID.length > 0 && itemType.length > 0 ) {
 					iconsCount++;
