@@ -87,6 +87,8 @@ static NSString *const domainString = @"com.tomaszpoliszuk.homescreenquickaction
 @end
 @interface _UIContextMenuActionsListView : UIInterfaceActionGroupView
 @end
+@interface _UIContextMenuListView : UIInterfaceActionGroupView
+@end
 
 @interface _UIInterfaceActionBlankSeparatorView : UIView
 @end

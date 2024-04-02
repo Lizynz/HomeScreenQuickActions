@@ -1343,6 +1343,7 @@ static void ClearDirectoryURLContents(NSURL *url) {
 }
 %end
 
+//iOS 13 - 14 Class
 %hook _UIContextMenuActionsListView
 - (bool)reversesActionOrder {
 	bool origValue = %orig;
@@ -1366,6 +1367,33 @@ static void ClearDirectoryURLContents(NSURL *url) {
 		}
 	}
 	%orig;
+}
+%end
+
+//iOS 15 - 17 Class
+%hook _UIContextMenuListView
+- (bool)reversesActionOrder {
+    bool origValue = %orig;
+    if ( enableTweak ) {
+        return reverseQuickActionsOrder;
+    }
+    return origValue;
+}
+%new
+-(void)updateTraitOverride {
+    if (@available(iOS 15, *)) {
+        if ( enableTweak && uiStyle != 999 ) {
+            [self setOverrideUserInterfaceStyle:uiStyle];
+        }
+    }
+}
+-(void)didMoveToWindow {
+    if (@available(iOS 15, *)) {
+        if ( enableTweak && uiStyle != 999 ) {
+            [self setOverrideUserInterfaceStyle:uiStyle];
+        }
+    }
+    %orig;
 }
 %end
 
