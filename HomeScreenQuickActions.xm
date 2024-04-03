@@ -1086,58 +1086,53 @@ static void ClearDirectoryURLContents(NSURL *url) {
             [[UIPasteboard generalPasteboard] setString:stringForPasteboard];
         }
         return NO;
-	} else if( ( [[self icon] respondsToSelector:@selector(applicationBundleID)] || [self isFolderIcon] ) && [[arg1 type] isEqualToString:@"com.tomaszpoliszuk.springboardhome.application-shortcut-item.offload-app"] ) {
-		NSString *title = @"";
-		NSMutableArray *appsToOffload = [[NSMutableArray alloc] init];
-		NSNumber *staticDiskUsage = 0;
-		if ( [self isFolderIcon] ) {
-			title = [[self folderIcon] folder].displayName;
-			for ( SBIcon *icon in [[[self folderIcon] folder] icons] ) {
-				LSApplicationProxy *applicationProxy = [%c(LSApplicationProxy) applicationProxyForIdentifier:[icon applicationBundleID]];
-				staticDiskUsage = [NSNumber numberWithFloat:([staticDiskUsage doubleValue] + [applicationProxy.staticDiskUsage doubleValue])];
-				[appsToOffload addObject: [icon applicationBundleID]];
-			}
-			UIAlertController *currentAlert = [UIAlertController alertControllerWithTitle:@"Offload Apps" message:[NSString stringWithFormat:@"Do you want to Offload Apps in %@ folder?", title] preferredStyle:UIAlertControllerStyleAlert];
-			UIAlertAction *confirm = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * action) {
+	} else if (([[self icon] respondsToSelector:@selector(applicationBundleID)] || [self isFolderIcon]) && [[arg1 type] isEqualToString:@"com.tomaszpoliszuk.springboardhome.application-shortcut-item.offload-app"]) {
+        NSString *title = @"";
+        NSMutableArray *appsToOffload = [[NSMutableArray alloc] init];
+        NSNumber *staticDiskUsage = @0;
+        if ([self isFolderIcon]) {
+            title = [[self folderIcon] folder].displayName;
+            for (SBIcon *icon in [[[self folderIcon] folder] icons]) {
+                NSString *bundleID = [icon applicationBundleID];
+                if (bundleID && ![bundleID isEqualToString:@""]) {
+                    LSApplicationProxy *applicationProxy = [%c(LSApplicationProxy) applicationProxyForIdentifier:bundleID];
+                    if (applicationProxy) {
+                        staticDiskUsage = @([staticDiskUsage doubleValue] + [applicationProxy.staticDiskUsage doubleValue]);
+                        [appsToOffload addObject:bundleID];
+                    }
+                }
+            }
+        } else {
+            NSString *bundleID = applicationBundleID;
+            if (bundleID && ![bundleID isEqualToString:@""]) {
+                LSApplicationProxy *applicationProxy = [%c(LSApplicationProxy) applicationProxyForIdentifier:bundleID];
+                if (applicationProxy) {
+                    title = applicationProxy.localizedName;
+                    staticDiskUsage = applicationProxy.staticDiskUsage;
+                    [appsToOffload addObject:bundleID];
+                }
+            }
+        }
+        if ([appsToOffload count] > 0) {
+            UIAlertController *currentAlert = [UIAlertController alertControllerWithTitle:@"Offload Apps" message:[NSString stringWithFormat:@"Do you want to Offload Apps in %@ folder?", title] preferredStyle:UIAlertControllerStyleAlert];
+            UIAlertAction *confirm = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDestructive handler:^(UIAlertAction *action) {
                 [currentAlert dismissViewControllerAnimated:YES completion:nil];
-				for ( NSString *applicationBundleID in appsToOffload ) {
-					dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-						[%c(IXAppInstallCoordinator) demoteAppToPlaceholderWithBundleID:applicationBundleID forReason:2 waitForDeletion:1 completion:nil];
-					});
-				}
-				NSString *message = [NSString stringWithFormat:@"Applications in %@ folder are now offloaded. Reclaimed %@.", title, [NSByteCountFormatter stringFromByteCount:[[NSNumber numberWithDouble:[staticDiskUsage doubleValue]] doubleValue] countStyle:NSByteCountFormatterCountStyleDecimal]];
-
-				ShowMessage( title, message );
-			}];
-			UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction * action) {
+                for (NSString *bundleID in appsToOffload) {
+                    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                        [%c(IXAppInstallCoordinator) demoteAppToPlaceholderWithBundleID:bundleID forReason:2 waitForDeletion:1 completion:nil];
+                    });
+                }
+                NSString *message = [NSString stringWithFormat:@"Applications in %@ folder are now offloaded. Reclaimed %@.", title, [NSByteCountFormatter stringFromByteCount:[staticDiskUsage doubleValue] countStyle:NSByteCountFormatterCountStyleDecimal]];
+                ShowMessage(title, message);
+            }];
+            UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
                 [currentAlert dismissViewControllerAnimated:YES completion:nil];
-			}];
-			[currentAlert addAction:confirm];
-			[currentAlert addAction:cancel];
+            }];
+            [currentAlert addAction:confirm];
+            [currentAlert addAction:cancel];
             UIViewController *rootViewController = [[[UIApplication sharedApplication] keyWindow] rootViewController];
             [rootViewController presentViewController:currentAlert animated:YES completion:nil];
-		} else {
-			LSApplicationProxy *applicationProxy = [%c(LSApplicationProxy) applicationProxyForIdentifier:applicationBundleID];
-			title = applicationProxy.localizedName;
-			staticDiskUsage = applicationProxy.staticDiskUsage;
-			UIAlertController *currentAlert = [UIAlertController alertControllerWithTitle:@"Offload App" message:[NSString stringWithFormat:@"Do you want to Offload %@?", title] preferredStyle:UIAlertControllerStyleAlert];
-			UIAlertAction *confirm = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * action) {
-                [currentAlert dismissViewControllerAnimated:YES completion:nil];
-				dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-					[%c(IXAppInstallCoordinator) demoteAppToPlaceholderWithBundleID:applicationBundleID forReason:2 waitForDeletion:1 completion:nil];
-				});
-				NSString *message = [NSString stringWithFormat:@"%@ is now offloaded. Reclaimed %@.", title, [NSByteCountFormatter stringFromByteCount:[[NSNumber numberWithDouble:[staticDiskUsage doubleValue]] doubleValue] countStyle:NSByteCountFormatterCountStyleDecimal]];
-
-				ShowMessage( title, message );
-			}];
-			UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction * action) {
-                [currentAlert dismissViewControllerAnimated:YES completion:nil];
-			}];
-			[currentAlert addAction:confirm];
-			[currentAlert addAction:cancel];
-            UIViewController *rootViewController = [[[UIApplication sharedApplication] keyWindow] rootViewController];
-            [rootViewController presentViewController:currentAlert animated:YES completion:nil];
-		}
+        }
 		return NO;
 	} else if ( ( [[self icon] respondsToSelector:@selector(applicationBundleID)] || [self isFolderIcon] ) && [[arg1 type] isEqualToString:@"com.tomaszpoliszuk.springboardhome.application-shortcut-item.clear-badge"] ) {
 		if ( [self isFolderIcon] ) {
