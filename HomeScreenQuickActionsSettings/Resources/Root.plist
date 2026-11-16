@@ -13,35 +13,20 @@
 		},
 		{
 			cell = PSGroupCell;
-			label = "UI Style";
-		},
-		{
-			cell = PSSegmentCell;
-			default = 999;
-			key = "uiStyle";
-			label = "UI Style";
-			defaults = com.tomaszpoliszuk.homescreenquickactions;
-			PostNotification = "com.tomaszpoliszuk.homescreenquickactions.settingschanged";
-			validValues = (
-				999,
-				1,
-				2
-			);
-			validTitles = (
-				"Default",
-				"Light",
-				"Dark"
-			);
-			height = 55;
-		},
-		{
-			cell = PSGroupCell;
-			label = "Installed Applications (Native)";
+			label = "Installed Applications";
 		},
 		{
 			cell = PSSwitchCell;
 			key = "appQuickActionDelete";
-			label = "Delete App";
+			label = "Remove App";
+			default = 1;
+			defaults = com.tomaszpoliszuk.homescreenquickactions;
+			PostNotification = "com.tomaszpoliszuk.homescreenquickactions.settingschanged";
+		},
+		{
+			cell = PSSwitchCell;
+			key = "appQuickActionAppProtection";
+			label = "Require Face ID/Touch ID";
 			default = 1;
 			defaults = com.tomaszpoliszuk.homescreenquickactions;
 			PostNotification = "com.tomaszpoliszuk.homescreenquickactions.settingschanged";
@@ -64,8 +49,32 @@
 		},
 		{
 			cell = PSSwitchCell;
+			key = "appQuickActionSendBetaFeedback";
+			label = "Send Beta Feedback";
+			default = 1;
+			defaults = com.tomaszpoliszuk.homescreenquickactions;
+			PostNotification = "com.tomaszpoliszuk.homescreenquickactions.settingschanged";
+		},
+		{
+			cell = PSSwitchCell;
+			key = "widgetQuickActionResize";
+			label = "Widget Size";
+			default = 1;
+			defaults = com.tomaszpoliszuk.homescreenquickactions;
+			PostNotification = "com.tomaszpoliszuk.homescreenquickactions.settingschanged";
+		},
+		{
+			cell = PSSwitchCell;
+			key = "appQuickActionNewWindow";
+			label = "New Window (iPad)";
+			default = 1;
+			defaults = com.tomaszpoliszuk.homescreenquickactions;
+			PostNotification = "com.tomaszpoliszuk.homescreenquickactions.settingschanged";
+		},
+		{
+			cell = PSSwitchCell;
 			key = "appQuickActionShowAllWindows";
-			label = "Show all Windows";
+			label = "Show all Windows (iPad)";
 			default = 1;
 			defaults = com.tomaszpoliszuk.homescreenquickactions;
 			PostNotification = "com.tomaszpoliszuk.homescreenquickactions.settingschanged";
@@ -77,75 +86,7 @@
 		},
 		{
 			cell = PSGroupCell;
-			label = "Installed Applications (Custom)";
-		},
-		{
-			cell = PSSwitchCell;
-			key = "appCustomQuickActionShareBundleID";
-			label = "Share Bundle ID";
-			default = 0;
-			defaults = com.tomaszpoliszuk.homescreenquickactions;
-			PostNotification = "com.tomaszpoliszuk.homescreenquickactions.settingschanged";
-		},
-		{
-			cell = PSSwitchCell;
-			key = "appCustomQuickActionCopyBundleID";
-			label = "Copy Bundle ID";
-			default = 0;
-			defaults = com.tomaszpoliszuk.homescreenquickactions;
-			PostNotification = "com.tomaszpoliszuk.homescreenquickactions.settingschanged";
-		},
-		{
-			cell = PSSwitchCell;
-			key = "appCustomQuickActionOpenAppInFilza";
-			label = "Open App in Filza";
-			default = 0;
-			defaults = com.tomaszpoliszuk.homescreenquickactions;
-			PostNotification = "com.tomaszpoliszuk.homescreenquickactions.settingschanged";
-		},
-		{
-			cell = PSSwitchCell;
-			key = "appCustomQuickActionClearBadge";
-			label = "Clear Badge";
-			default = 0;
-			defaults = com.tomaszpoliszuk.homescreenquickactions;
-			PostNotification = "com.tomaszpoliszuk.homescreenquickactions.settingschanged";
-		},
-		{
-			cell = PSSwitchCell;
-			key = "appCustomQuickActionClearCache";
-			label = "Clear App Cache";
-			default = 0;
-			defaults = com.tomaszpoliszuk.homescreenquickactions;
-			PostNotification = "com.tomaszpoliszuk.homescreenquickactions.settingschanged";
-		},
-		{
-			cell = PSSwitchCell;
-			key = "appCustomQuickActionReset";
-			label = "Reset App";
-			default = 0;
-			defaults = com.tomaszpoliszuk.homescreenquickactions;
-			PostNotification = "com.tomaszpoliszuk.homescreenquickactions.settingschanged";
-		},
-		{
-			cell = PSSwitchCell;
-			key = "appCustomQuickActionOffload";
-			label = "Offload App";
-			default = 0;
-			defaults = com.tomaszpoliszuk.homescreenquickactions;
-			PostNotification = "com.tomaszpoliszuk.homescreenquickactions.settingschanged";
-		},
-		{
-			cell = PSSwitchCell;
-			key = "appCustomQuickActionOpenAppSettings";
-			label = "Open App Settings";
-			default = 0;
-			defaults = com.tomaszpoliszuk.homescreenquickactions;
-			PostNotification = "com.tomaszpoliszuk.homescreenquickactions.settingschanged";
-		},
-		{
-			cell = PSGroupCell;
-			label = "Offloaded Applications (Native)";
+			label = "Offloaded Applications";
 		},
 		{
 			cell = PSSwitchCell;
@@ -157,35 +98,7 @@
 		},
 		{
 			cell = PSGroupCell;
-			label = "Offloaded Applications (Custom)";
-		},
-		{
-			cell = PSSwitchCell;
-			key = "offloadedAppCustomQuickActionShareBundleID";
-			label = "Share Bundle ID";
-			default = 0;
-			defaults = com.tomaszpoliszuk.homescreenquickactions;
-			PostNotification = "com.tomaszpoliszuk.homescreenquickactions.settingschanged";
-		},
-		{
-			cell = PSSwitchCell;
-			key = "offloadedAppCustomQuickActionCopyBundleID";
-			label = "Copy Bundle ID";
-			default = 0;
-			defaults = com.tomaszpoliszuk.homescreenquickactions;
-			PostNotification = "com.tomaszpoliszuk.homescreenquickactions.settingschanged";
-		},
-		{
-			cell = PSSwitchCell;
-			key = "offloadedAppCustomQuickActionOpenAppInFilza";
-			label = "Open App in Filza";
-			default = 0;
-			defaults = com.tomaszpoliszuk.homescreenquickactions;
-			PostNotification = "com.tomaszpoliszuk.homescreenquickactions.settingschanged";
-		},
-		{
-			cell = PSGroupCell;
-			label = "Folders (Native)";
+			label = "Folders";
 		},
 		{
 			cell = PSSwitchCell;
@@ -221,85 +134,7 @@
 		},
 		{
 			cell = PSGroupCell;
-			label = "Folders (Custom)";
-			footerText = "Beta Action Info:
-Clear Apps Cache - never shows info about already empty cache
-Reset Apps - never shows info that apps were already reset
-List Apps In Folder - doesn't show badges";
-		},
-		{
-			cell = PSSwitchCell;
-			key = folderCustomQuickActionShareBundleID;
-			label = "Share Bundle IDs";
-			default = 0;
-			defaults = com.tomaszpoliszuk.homescreenquickactions;
-			PostNotification = "com.tomaszpoliszuk.homescreenquickactions.settingschanged";
-		},
-		{
-			cell = PSSwitchCell;
-			key = "folderCustomQuickActionCopyBundleID";
-			label = "Copy Bundle IDs";
-			default = 0;
-			defaults = com.tomaszpoliszuk.homescreenquickactions;
-			PostNotification = "com.tomaszpoliszuk.homescreenquickactions.settingschanged";
-		},
-		{
-			cell = PSSwitchCell;
-			key = "folderCustomQuickActionClearBadge";
-			label = "Clear Badges";
-			default = 0;
-			defaults = com.tomaszpoliszuk.homescreenquickactions;
-			PostNotification = "com.tomaszpoliszuk.homescreenquickactions.settingschanged";
-		},
-		{
-			cell = PSSwitchCell;
-			cellClass = PSSubtitleSwitchTableCell;
-			key = "folderCustomQuickActionClearCache";
-			label = "Clear Apps Cache";
-			cellSubtitleText = "Beta Action";
-			default = 0;
-			defaults = com.tomaszpoliszuk.homescreenquickactions;
-			PostNotification = "com.tomaszpoliszuk.homescreenquickactions.settingschanged";
-		},
-		{
-			cell = PSSwitchCell;
-			cellClass = PSSubtitleSwitchTableCell;
-			key = "folderCustomQuickActionReset";
-			label = "Reset Apps";
-			cellSubtitleText = "Beta Action";
-			default = 0;
-			defaults = com.tomaszpoliszuk.homescreenquickactions;
-			PostNotification = "com.tomaszpoliszuk.homescreenquickactions.settingschanged";
-		},
-		{
-			cell = PSSwitchCell;
-			key = "folderCustomQuickActionOffload";
-			label = "Offload Apps";
-			default = 0;
-			defaults = com.tomaszpoliszuk.homescreenquickactions;
-			PostNotification = "com.tomaszpoliszuk.homescreenquickactions.settingschanged";
-		},
-		{
-			cell = PSSwitchCell;
-			cellClass = PSSubtitleSwitchTableCell;
-			key = "folderCustomQuickActionAppList";
-			label = "List Apps In Folder";
-			cellSubtitleText = "Beta Action";
-			default = 0;
-			defaults = com.tomaszpoliszuk.homescreenquickactions;
-			PostNotification = "com.tomaszpoliszuk.homescreenquickactions.settingschanged";
-		},
-		{
-			cell = PSEditTextCell;
-			label = "Maximum Apps In List: ";
-			key = "folderCustomQuickActionAppListMax";
-			default = "6";
-			defaults = com.tomaszpoliszuk.homescreenquickactions;
-			PostNotification = "com.tomaszpoliszuk.homescreenquickactions.settingschanged";
-		},
-		{
-			cell = PSGroupCell;
-			label = "Widgets (Native)";
+			label = "Widgets";
 		},
 		{
 			cell = PSSwitchCell;
@@ -343,7 +178,7 @@ List Apps In Folder - doesn't show badges";
 		},
 		{
 			cell = PSGroupCell;
-			label = "Bookmarks (Native)";
+			label = "Bookmarks";
 		},
 		{
 			cell = PSSwitchCell;
@@ -371,7 +206,7 @@ List Apps In Folder - doesn't show badges";
 		},
 		{
 			cell = PSGroupCell;
-			label = "Visible in App Library (Native)";
+			label = "Visible in App Library";
 			key = "visibleinAppLibraryGroup";
 		},
 		{
@@ -384,7 +219,7 @@ List Apps In Folder - doesn't show badges";
 		},
 		{
 			cell = PSGroupCell;
-			label = "Visible during downloading app (Native)";
+			label = "Visible during downloading app";
 		},
 		{
 			cell = PSSwitchCell;
@@ -412,7 +247,7 @@ List Apps In Folder - doesn't show badges";
 		},
 		{
 			cell = PSGroupCell;
-			label = "Visible in iPad Dock recents (Native)";
+			label = "Visible in iPad Dock recents";
 		},
 		{
 			cell = PSSwitchCell;
@@ -424,72 +259,12 @@ List Apps In Folder - doesn't show badges";
 		},
 		{
 			cell = PSGroupCell;
-			label = "Additional options";
-		},
-		{
-			cell = PSSwitchCell;
-			default = 1;
-			key = showSeparators;
-			label = "Show Separators";
-			defaults = com.tomaszpoliszuk.homescreenquickactions;
-			PostNotification = "com.tomaszpoliszuk.homescreenquickactions.settingschanged";
-		},
-		{
-			cell = PSSwitchCell;
-			default = 0;
-			key = "reverseQuickActionsOrder";
-			label = "Reverse Quick Actions Order";
-			defaults = com.tomaszpoliszuk.homescreenquickactions;
-			PostNotification = "com.tomaszpoliszuk.homescreenquickactions.settingschanged";
-		},
-		{
-			cell = PSLinkCell;
-			label = "Rename Actions";
-			detail = "HomeScreenQuickActionsRenameSettings";
-		},
-		{
-			cell = PSGroupCell;
-			label = " ";
-		},
-		{
-			cell = PSButtonCell;
-			label = "Reset Settings";
-			action = resetSettings;
-			alignment = center;
-		},
-		{
-			cell = PSGroupCell;
 			label = "Related Links";
 		},
 		{
 			cell = PSButtonCell;
 			label = "Source Code";
 			action = sourceCode;
-			icon = "icons/code.png";
-		},
-		{
-			cell = PSButtonCell;
-			label = "Known Issues";
-			action = knownIssues;
-			icon = "icons/bug.png";
-		},
-		{
-			cell = PSButtonCell;
-			label = "Tomasz Poliszuk @ BigBoss";
-			action = TomaszPoliszukAtBigBoss;
-			icon = "icons/packages.png";
-		},
-		{
-			cell = PSButtonCell;
-			label = "Tomasz Poliszuk @ Github";
-			action = TomaszPoliszukAtGithub;
-			icon = "icons/github.png";
-		},
-		{
-			cell = PSButtonCell;
-			label = "Tomasz Poliszuk @ Twitter";
-			action = TomaszPoliszukAtTwitter;
-			icon = "icons/twitter.png";
 		},
 	);
 }

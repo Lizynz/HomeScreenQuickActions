@@ -1,7 +1,4 @@
-TARGET = iphone:clang::14.2
 ARCHS = arm64 arm64e
-
-SYSROOT = $(THEOS)/sdks/iPhoneOS14.2.sdk
 
 include $(THEOS)/makefiles/common.mk
 

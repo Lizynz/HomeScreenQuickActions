@@ -14,6 +14,8 @@
  * along with Home Screen Quick Actions. If not, see <https://www.gnu.org/licenses/>.
  */
 
+#import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 
 static NSOperatingSystemVersion iOSversion = [[NSProcessInfo processInfo] operatingSystemVersion];
 static NSString *const domainString = @"com.tomaszpoliszuk.homescreenquickactions";

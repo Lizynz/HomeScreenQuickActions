@@ -21,6 +21,20 @@
 - (NSArray *)specifiers {
 	if (!_specifiers) {
 		_specifiers = [self loadSpecifiersFromPlistName:@"Root" target:self];
+
+		for (PSSpecifier *specifier in _specifiers) {
+			if (specifier.cellType == PSSwitchCell) {
+				[specifier setProperty:@"" forKey:@"cellSubtitleText"];
+			}
+		}
+
+		UIBarButtonItem *resetItem = [[UIBarButtonItem alloc] initWithImage:[UIImage systemImageNamed:@"trash"]
+																	   style:UIBarButtonItemStylePlain
+																	  target:self
+																	  action:@selector(resetSettings)];
+		resetItem.tintColor = [UIColor systemRedColor];
+		self.navigationItem.rightBarButtonItem = resetItem;
+		
 		if (iOSversion.majorVersion == 13) {
 			removeSpecifiers = [[NSMutableArray alloc]init];
 			for(PSSpecifier* specifier in _specifiers) {
@@ -58,14 +72,20 @@
 	}
 	return _specifiers;
 }
+
 - (void)resetSettings {
-	NSUserDefaults *tweakSettings = [[NSUserDefaults alloc] initWithSuiteName:domainString];
 	UIAlertController *resetSettingsAlert = [UIAlertController alertControllerWithTitle:@"Reset Home Screen Quick Actions Settings" message:@"Do you want to reset settings?" preferredStyle:UIAlertControllerStyleAlert];
 	UIAlertAction *confirm = [UIAlertAction actionWithTitle:@"Confirm" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
-		for(NSString* key in [[tweakSettings dictionaryRepresentation] allKeys]) {
-			[tweakSettings removeObjectForKey:key];
-		}
+		NSUserDefaults *tweakSettings = [[NSUserDefaults alloc] initWithSuiteName:domainString];
+		[tweakSettings removePersistentDomainForName:domainString];
 		[tweakSettings synchronize];
+
+		CFNotificationCenterPostNotification(
+			CFNotificationCenterGetDarwinNotifyCenter(),
+			CFSTR("com.tomaszpoliszuk.homescreenquickactions.settingschanged"),
+			NULL, NULL, YES
+		);
+
 		[self reloadSpecifiers];
 	}];
 	UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil];
@@ -73,31 +93,10 @@
 	[resetSettingsAlert addAction:confirm];
 	[self presentViewController:resetSettingsAlert animated:YES completion:nil];
 }
+
 - (void)sourceCode {
-	NSURL *sourceCode = [NSURL URLWithString:@"https://github.com/tomaszpoliszuk/HomeScreenQuickActions"];
+	NSURL *sourceCode = [NSURL URLWithString:@"https://github.com/Lizynz/HomeScreenQuickActions"];
 	[[UIApplication sharedApplication] openURL:sourceCode options:@{} completionHandler:nil];
 }
-- (void)knownIssues {
-	NSURL *knownIssues = [NSURL URLWithString:@"https://github.com/tomaszpoliszuk/HomeScreenQuickActions/issues"];
-	[[UIApplication sharedApplication] openURL:knownIssues options:@{} completionHandler:nil];
-}
-- (void)TomaszPoliszukAtBigBoss {
-	UIApplication *application = [UIApplication sharedApplication];
-	NSString *tweakName = @"Home Screen Quick Actions";
-	tweakName = [tweakName stringByReplacingOccurrencesOfString:@" " withString:@"+"];
-	NSURL *twitterWebsite = [NSURL URLWithString:[@"http://apt.thebigboss.org/developer-packages.php?name=" stringByAppendingString:tweakName]];
-	[application openURL:twitterWebsite options:@{} completionHandler:nil];
-}
-- (void)TomaszPoliszukAtGithub {
-	UIApplication *application = [UIApplication sharedApplication];
-	NSString *username = @"tomaszpoliszuk";
-	NSURL *githubWebsite = [NSURL URLWithString:[@"https://github.com/" stringByAppendingString:username]];
-	[application openURL:githubWebsite options:@{} completionHandler:nil];
-}
-- (void)TomaszPoliszukAtTwitter {
-	UIApplication *application = [UIApplication sharedApplication];
-	NSString *username = @"tomaszpoliszuk";
-	NSURL *twitterWebsite = [NSURL URLWithString:[@"https://mobile.twitter.com/" stringByAppendingString:username]];
-	[application openURL:twitterWebsite options:@{} completionHandler:nil];
-}
+
 @end
